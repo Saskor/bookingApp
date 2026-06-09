@@ -1,22 +1,14 @@
 import { Popover, type PopoverProps } from "@vkontakte/vkui";
 import type { FC } from "react";
-import type { ITooltipProps } from "./types";
 
-export const Tooltip: FC<ITooltipProps> = ({
+export const Tooltip: FC<PopoverProps> = ({
   children,
   content,
-}: {
-  children: PopoverProps["children"];
-  content: PopoverProps["content"];
+  trigger = ["click", "hover"],
+  placement = "bottom",
 }) => {
   return (
-    <Popover
-      trigger={["click", "hover"]}
-      placement="bottom"
-      role="tooltip"
-      aria-describedby="tooltip-1"
-      content={content}
-    >
+    <Popover trigger={trigger} placement={placement} content={content}>
       {children}
     </Popover>
   );

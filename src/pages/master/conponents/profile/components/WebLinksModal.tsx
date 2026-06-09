@@ -1,29 +1,35 @@
-import { ModalFullScreen } from "components/modalFullScreen/ModalFullScreen";
-import { Text } from "@vkontakte/vkui";
-import { InputField } from "components/inputField/InputField";
-import { StyledOrgSettingsModalContainer } from "./styles";
+import { Panel, PanelHeaderBack, Text, type PanelProps } from "@vkontakte/vkui";
 import { observer } from "mobx-react";
+import type { FC } from "react";
+
+import { InputField } from "components/inputField/InputField";
 import { rootStore } from "store/rootStore";
-import { modalsIdsMap } from "../constants";
 
-export const WebLinksModal = observer(() => {
-  const { webLinks, setWebLinks } = rootStore.orgSettingsModalStore;
-  const { removeLastModal, modalsStack } = rootStore.modalsStore;
+import { panelsIdsMap } from "../constants";
 
-  const isOpen = modalsStack.length > 0 && modalsStack.slice(-1)[0] === modalsIdsMap.WebLinksModal;
-  const close = () => {
+import { useWebLinksPanelState } from "./hooks";
+import { StyledOrgSettingsModalContainer, StyledPanelHeader } from "./styles";
+
+export const WebLinksPanel = observer<FC<PanelProps>>(({ id }) => {
+  const { webLinks, setWebLinks, saveState } = useWebLinksPanelState();
+  const { goBack, navHistory } = rootStore.panelsStore;
+
+  const isOpen = navHistory.length > 0 && navHistory.slice(-1)[0] === panelsIdsMap.WebLinks;
+
+  const handlePanelClose = () => {
     if (isOpen) {
-      removeLastModal();
+      saveState();
+      goBack();
     }
   };
 
   return (
-    <ModalFullScreen
-      id="webLinksModal"
-      isOpen={isOpen}
-      close={close}
-      title={<Text>Ссылки в соцсетях и месенджерах</Text>}
-    >
+    <Panel id={id}>
+      <StyledPanelHeader>
+        <PanelHeaderBack hideLabelOnVKCom hideLabelOnIOS onClick={handlePanelClose} />
+        <Text>Ссылки в соцсетях и месенджерах</Text>
+      </StyledPanelHeader>
+
       <StyledOrgSettingsModalContainer>
         <InputField
           key={webLinks.vkLinks[0].id}
@@ -31,11 +37,11 @@ export const WebLinksModal = observer(() => {
           minWidth={310}
           type="text"
           id="vk"
-          value={webLinks.vkLinks[0].href}
+          value={webLinks.vkLinks[0].value}
           onChange={(newValue) => {
             setWebLinks({
               ...webLinks,
-              vkLinks: [{ href: newValue, id: webLinks.vkLinks[0].id }],
+              vkLinks: [{ value: newValue, id: webLinks.vkLinks[0].id }],
             });
           }}
           placeholder={"https://vk.ru/"}
@@ -46,12 +52,12 @@ export const WebLinksModal = observer(() => {
           topLabel="Ссылка на канал в Telegram"
           minWidth={310}
           type="text"
-          id="vk"
-          value={webLinks.tgLinks[0].href}
+          id="tg"
+          value={webLinks.tgLinks[0].value}
           onChange={(newValue) => {
             setWebLinks({
               ...webLinks,
-              tgLinks: [{ href: newValue, id: webLinks.tgLinks[0].id }],
+              tgLinks: [{ value: newValue, id: webLinks.tgLinks[0].id }],
             });
           }}
           placeholder={"https://t.me/"}
@@ -63,32 +69,32 @@ export const WebLinksModal = observer(() => {
           minWidth={310}
           type="text"
           id="max"
-          value={webLinks.maxLinks[0].href}
+          value={webLinks.maxLinks[0].value}
           onChange={(newValue) => {
             setWebLinks({
               ...webLinks,
-              maxLinks: [{ href: newValue, id: webLinks.maxLinks[0].id }],
+              maxLinks: [{ value: newValue, id: webLinks.maxLinks[0].id }],
             });
           }}
           placeholder={"https://max.ru/"}
         />
 
         <InputField
-          key={webLinks.webLinks[0].id}
+          key={webLinks.websiteLinks[0].id}
           topLabel="Ссылка на сайт"
           minWidth={310}
           type="text"
           id="web"
-          value={webLinks.webLinks[0].href}
+          value={webLinks.websiteLinks[0].value}
           onChange={(newValue) => {
             setWebLinks({
               ...webLinks,
-              webLinks: [{ href: newValue, id: webLinks.webLinks[0].id }],
+              websiteLinks: [{ value: newValue, id: webLinks.websiteLinks[0].id }],
             });
           }}
           placeholder={"https://mysite.ru/"}
         />
       </StyledOrgSettingsModalContainer>
-    </ModalFullScreen>
+    </Panel>
   );
 });

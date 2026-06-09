@@ -16,7 +16,7 @@ function handleModuleDirectivesPlugin() {
 
 export default defineConfig({
   server: {
-    port: 5173,
+    port: 5000,
     proxy: {
       "/api": {
         target: "http://localhost:8080",
@@ -58,12 +58,15 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      constants: `${__dirname}/src/constants/`,
       components: `${__dirname}/src/components/`,
       styles: `${__dirname}/src/styles/`,
       types: `${__dirname}/src/types/`,
       utils: `${__dirname}/src/utils/`,
       pages: `${__dirname}/src/pages/`,
       store: `${__dirname}/src/store/`,
+      openapi: `${__dirname}/src/openapi/`,
+      api: `${__dirname}/src/api/`,
     },
   },
   define: {

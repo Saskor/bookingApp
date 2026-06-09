@@ -1,36 +1,74 @@
-import { observer } from "mobx-react";
-import { Button, IconButton, Text } from "@vkontakte/vkui";
-import { rootStore } from "store/rootStore";
-import { modalsIdsMap } from "../constants";
-import type { IServicesListModalProps } from "./types";
-import { ModalFullScreen } from "components/modalFullScreen/ModalFullScreen";
-import type { FC } from "react";
-import { StyledOrgSettingsModalContainer, StyledServiceItemContainer } from "./styles";
 import { Icon20GearCircleFillGray, Icon20TrashSimpleOutline } from "@vkontakte/icons";
-import { getEmptyService } from "store/orgSettingsModalStore/utils";
+import { Button, Panel, PanelHeaderBack, Text, type PanelProps } from "@vkontakte/vkui";
+import { observer } from "mobx-react";
+import { useState, useRef, type FC } from "react";
 
-export const ServicesModal = observer<FC<IServicesListModalProps>>(({ isBranch }) => {
-  const { servicesList, setServicesList, setServicesListIndex, resetServicesList } =
-    rootStore.orgSettingsModalStore;
-  const { addNewModal, removeLastModal, modalsStack } = rootStore.modalsStore;
+import { ConfirmModal } from "components/confirmModal/ConfirmModal";
+import { useOrgId } from "pages/master/hooks";
+import { rootStore } from "store/rootStore";
 
-  const isOpen = modalsStack.length > 0 && modalsStack.slice(-1)[0] === modalsIdsMap.ServicesModal;
-  const close = () => {
-    if (isOpen) {
-      removeLastModal();
-    }
+import { panelsIdsMap } from "../constants";
+
+import { useServicesPanelState } from "./hooks";
+import {
+  StyledOrgSettingsModalContainer,
+  StyledServiceItemContainer,
+  StyledIconButton,
+  StyledPanelHeader,
+} from "./styles";
+import { getEmptyService } from "./utils";
+
+export const ServicesPanel = observer<FC<PanelProps>>(({ id }) => {
+  const { setServicesListIndex } = rootStore.orgSettingsStore;
+  const { goTo, goBack } = rootStore.panelsStore;
+  const { services: servicesList, setServices: setServicesList } = useServicesPanelState();
+  const { orgId } = useOrgId();
+
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const deletedItemIndexRef = useRef(0);
+
+  const prepareDeleteServiceHandler = (serviceIndex: number) => () => {
+    deletedItemIndexRef.current = serviceIndex;
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmDeleteService = () => {
+    setServicesList(
+      deletedItemIndexRef.current === 0
+        ? [getEmptyService(orgId)]
+        : servicesList.filter(
+            (_, deletedServiceFieldIndex) =>
+              deletedServiceFieldIndex !== deletedItemIndexRef.current
+          )
+    );
+    setServicesListIndex(0);
+  };
+
+  const handleCancelDeleteService = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleAddService = () => {
+    setServicesList([...servicesList, getEmptyService(orgId)]);
+    setServicesListIndex(servicesList.length);
+    goTo(panelsIdsMap.ServiceSettings);
+  };
+
+  const prepareMoveToServiceHandler = (serviceIndex: number) => () => {
+    goTo(panelsIdsMap.ServiceSettings);
+    setServicesListIndex(serviceIndex);
   };
 
   return (
-    <ModalFullScreen
-      id={modalsIdsMap.ServicesModal}
-      isOpen={isOpen}
-      close={close}
-      title={<Text>{`Услуги ${isBranch ? "филиала" : ""} организации`}</Text>}
-    >
+    <Panel id={id}>
+      <StyledPanelHeader>
+        <PanelHeaderBack hideLabelOnVKCom hideLabelOnIOS onClick={goBack} />
+        <Text>Список услуг</Text>
+      </StyledPanelHeader>
+
       <StyledOrgSettingsModalContainer>
         <Button
-          onClick={() => setServicesList([...servicesList, getEmptyService()])}
+          onClick={handleAddService}
           mode="primary"
           appearance="accent-invariable"
           style={{ maxWidth: "fit-content" }}
@@ -42,53 +80,35 @@ export const ServicesModal = observer<FC<IServicesListModalProps>>(({ isBranch }
             <Text style={{ background: "rgb(235,235,235,0.20)" }}>
               {name || "Тут будет название услуги, нажмите на значек шестеренки справа"}
             </Text>
-            <IconButton
-              style={{
-                width: 30,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+            <StyledIconButton
               aria-label="Настройки"
-              onClick={() => {
-                addNewModal(modalsIdsMap.ServiceSettingsModal);
-                setServicesListIndex(serviceIndex);
-              }}
+              onClick={prepareMoveToServiceHandler(serviceIndex)}
             >
               <Icon20GearCircleFillGray
                 style={{ color: "var(--vkui--color_accent_red)", padding: 0 }}
               />
-            </IconButton>
+            </StyledIconButton>
 
-            <IconButton
-              style={{
-                width: 30,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+            <StyledIconButton
               aria-label="Удаление поля"
-              onClick={() => {
-                if (serviceIndex !== 0) {
-                  setServicesList(
-                    servicesList.filter(
-                      (_, deletedServiceFieldIndex) => deletedServiceFieldIndex !== serviceIndex
-                    )
-                  );
-                } else {
-                  resetServicesList();
-                }
-
-                setServicesListIndex(0);
-              }}
+              onClick={prepareDeleteServiceHandler(serviceIndex)}
             >
               <Icon20TrashSimpleOutline
                 style={{ color: "var(--vkui--color_accent_red)", padding: 0 }}
               />
-            </IconButton>
+            </StyledIconButton>
           </StyledServiceItemContainer>
         ))}
       </StyledOrgSettingsModalContainer>
-    </ModalFullScreen>
+
+      <ConfirmModal
+        title="Удалить услугу?"
+        description={servicesList[deletedItemIndexRef.current]?.name || ""}
+        isOpen={isConfirmModalOpen}
+        confirmButtonText="Удалить"
+        onCancel={handleCancelDeleteService}
+        onConfirm={handleConfirmDeleteService}
+      />
+    </Panel>
   );
 });

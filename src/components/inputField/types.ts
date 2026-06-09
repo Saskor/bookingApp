@@ -10,4 +10,5 @@ export interface IInputFieldProps {
   placeholder?: string;
   type?: string;
   minWidth?: number;
+  maxWidth?: number;
 }

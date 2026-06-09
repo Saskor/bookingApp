@@ -18,16 +18,19 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node"],
-    "baseUrl": "./src/",
+    "rootDir": "./",
+    "baseUrl": "./src",
     "paths": {
       "types": ["./types"],
       "api": ["./api"],
       "components": ["./components"],
       "constants": ["./constants"],
       "pages": ["./pages"],
-      "store": ["./store"]
+      "store": ["./store"],
+      "openapi": ["./openapi"]
     }
   },
-  "include": ["src"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules", "**/*.js", "**/.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

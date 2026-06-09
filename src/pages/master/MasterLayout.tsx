@@ -3,16 +3,20 @@ import {
   Icon20ListLetterOutline,
   Icon20ArticleBoxOutline,
 } from "@vkontakte/icons";
-import { Panel, Tabs, TabsItem } from "@vkontakte/vkui";
+import { Panel, Tabs, TabsItem, Title } from "@vkontakte/vkui";
 import { masterLayoutTabsIdsMap, masterLayoutTabsIdsToComponentsMap } from "./constants";
 import { useState } from "react";
 import { StyledTabContent } from "./styles";
 import { ValueOf } from "types";
+import { useGetData } from "./hooks";
 
-export const MasterLayout = ({ masterVkId }: { masterVkId: string }) => {
+export const MasterLayout = () => {
+  const { isUserBelongToThisOrg, userPermissions } = useGetData();
+
   const [currentTabId, setСurrentTabId] = useState<ValueOf<typeof masterLayoutTabsIdsMap>>(
     masterLayoutTabsIdsMap.profile
   );
+
   const items = [
     <TabsItem
       key={masterLayoutTabsIdsMap.profile}
@@ -53,12 +57,20 @@ export const MasterLayout = ({ masterVkId }: { masterVkId: string }) => {
 
   return (
     <Panel id="master">
-      <Tabs
-        onSelectedIdChange={(id) => setСurrentTabId(id as ValueOf<typeof masterLayoutTabsIdsMap>)}
-      >
-        {items}
-      </Tabs>
-      <CurrentTabComponent />
+      {isUserBelongToThisOrg && userPermissions?.all ? (
+        <>
+          <Tabs
+            onSelectedIdChange={(id) =>
+              setСurrentTabId(id as ValueOf<typeof masterLayoutTabsIdsMap>)
+            }
+          >
+            {items}
+          </Tabs>
+          <CurrentTabComponent />
+        </>
+      ) : (
+        <Title align="center">Вы не авторизованы в данной организации</Title>
+      )}
     </Panel>
   );
 };

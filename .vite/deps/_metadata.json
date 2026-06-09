@@ -1,0 +1,76 @@
+{
+  "hash": "c0954796",
+  "configHash": "223cba53",
+  "lockfileHash": "3e089baa",
+  "browserHash": "fefff850",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "8e0b9fe9",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "0a12cdab",
+      "needsInterop": true
+    },
+    "@vkontakte/vk-bridge": {
+      "src": "../../node_modules/@vkontakte/vk-bridge/dist/index.es.js",
+      "file": "@vkontakte_vk-bridge.js",
+      "fileHash": "46d3e12f",
+      "needsInterop": false
+    },
+    "@vkontakte/vk-bridge-react": {
+      "src": "../../node_modules/@vkontakte/vk-bridge-react/dist/index.es.js",
+      "file": "@vkontakte_vk-bridge-react.js",
+      "fileHash": "90cd8543",
+      "needsInterop": false
+    },
+    "@vkontakte/vkui": {
+      "src": "../../node_modules/@vkontakte/vkui/dist/index.js",
+      "file": "@vkontakte_vkui.js",
+      "fileHash": "86907f5e",
+      "needsInterop": false
+    },
+    "@vkontakte/vk-mini-apps-router": {
+      "src": "../../node_modules/@vkontakte/vk-mini-apps-router/dist/index.js",
+      "file": "@vkontakte_vk-mini-apps-router.js",
+      "fileHash": "67fd9b78",
+      "needsInterop": false
+    },
+    "styled-components": {
+      "src": "../../node_modules/styled-components/dist/styled-components.browser.esm.js",
+      "file": "styled-components.js",
+      "fileHash": "ae088972",
+      "needsInterop": false
+    },
+    "@tanstack/react-query": {
+      "src": "../../node_modules/@tanstack/react-query/build/modern/index.js",
+      "file": "@tanstack_react-query.js",
+      "fileHash": "9fba610e",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-RCEI74MP": {
+      "file": "chunk-RCEI74MP.js"
+    },
+    "chunk-OEKW6VBW": {
+      "file": "chunk-OEKW6VBW.js"
+    },
+    "chunk-OMDFP43T": {
+      "file": "chunk-OMDFP43T.js"
+    },
+    "chunk-RJDO2IQI": {
+      "file": "chunk-RJDO2IQI.js"
+    },
+    "chunk-OLG33HYM": {
+      "file": "chunk-OLG33HYM.js"
+    },
+    "chunk-5WRI5ZAA": {
+      "file": "chunk-5WRI5ZAA.js"
+    }
+  }
+}

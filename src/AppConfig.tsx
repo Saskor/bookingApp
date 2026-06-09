@@ -11,6 +11,23 @@ import { App } from "./App";
 import ResetStyles from "./styles/reset";
 import theme from "./styles/theme";
 import "@vkontakte/vkui/dist/vkui.css";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { client } from "openapi/requests/services.gen";
+import { api } from "api/axios";
+
+client.setConfig({
+  baseURL: "/api/v1",
+  axios: api,
+  throwOnError: true, // If you want to handle errors on `onError` callback of `useQuery` and `useMutation`, set this to `true`
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+});
 
 export const AppConfig = () => {
   const vkBridgeAppearance = useAppearance() || undefined;
@@ -26,11 +43,13 @@ export const AppConfig = () => {
       hasCustomPanelHeaderAfter={true}
     >
       <AdaptivityProvider {...adaptivity}>
-        <AppRoot mode="full" safeAreaInsets={vkBridgeInsets}>
+        <AppRoot scroll="contain" mode="full" safeAreaInsets={vkBridgeInsets}>
           <RouterProvider router={router}>
             <ThemeProvider theme={theme}>
-              <ResetStyles />
-              <App />
+              <QueryClientProvider client={queryClient}>
+                <ResetStyles />
+                <App />
+              </QueryClientProvider>
             </ThemeProvider>
           </RouterProvider>
         </AppRoot>

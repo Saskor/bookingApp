@@ -8,6 +8,9 @@ import eslintPluginReactDom from "eslint-plugin-react-dom";
 import eslintPluginReactWebApi from "eslint-plugin-react-web-api";
 import eslintPluginReactNamingConvention from "eslint-plugin-react-naming-convention";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import reactHooks from "eslint-plugin-react-hooks";
+import unusedImports from "eslint-plugin-unused-imports";
+import importX from "eslint-plugin-import-x";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
@@ -20,6 +23,9 @@ export default defineConfig([
       "@eslint-react/dom": eslintPluginReactDom,
       "@eslint-react/web-api": eslintPluginReactWebApi,
       "@eslint-react/naming-convention": eslintPluginReactNamingConvention,
+      "react-hooks": reactHooks,
+      "unused-imports": unusedImports,
+      "import-x": importX,
     },
     extends: ["js/recommended"],
     languageOptions: {
@@ -80,15 +86,37 @@ export default defineConfig([
           ignoreRegExpLiterals: true,
         },
       ],
+      "import-x/no-unresolved": "error",
+      "import-x/order": [
+        "error",
+        {
+          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "newlines-between": "always",
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true,
+          },
+        },
+      ],
+      "import-x/named": "error",
+      "no-unused-vars": "off", // Turn off core rule to avoid double reports
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" },
+      ],
     },
     settings: {
       // Automatically detect React version (optional but recommended)
       react: {
         version: "detect",
       },
+      "import-x/resolver": { typescript: true },
     },
+    ignores: ["./src/openapi/**"],
   },
   tseslint.configs.recommended,
   eslintPluginPrettierRecommended,
   eslintConfigPrettier,
+  reactHooks.configs.flat.recommended,
 ]);

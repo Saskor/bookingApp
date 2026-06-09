@@ -2,6 +2,7 @@ node_modules
 .idea
 dist
 build
+openapi
 coverage
 .cache
 *.min.js

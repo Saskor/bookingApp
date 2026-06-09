@@ -1,9 +1,9 @@
-export const modalsIdsMap = {
-  OrgBranchListModal: "orgBranchListModal",
-  OrgBranchSettingsModal: "orgBranchSettingsModal",
-  OrgSettingsModal: "orgSettingsModal",
-  PhonesListModal: "phonesListModal",
-  WebLinksModal: "webLinksModal",
-  ServicesModal: "servicesModal",
-  ServiceSettingsModal: "ServiceSettingsModal",
+export const panelsIdsMap = {
+  OrgBranchList: "orgBranchList",
+  OrgBranchSettings: "orgBranchSettings",
+  OrgSettings: "orgSettings",
+  PhonesList: "phonesList",
+  WebLinks: "webLinks",
+  Services: "services",
+  ServiceSettings: "ServiceSettings",
 } as const;

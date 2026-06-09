@@ -32,6 +32,8 @@ export const InpuTextAreaField: FC<ITextAreaFieldProps> = ({
 
   return (
     <FormItem
+      // @ts-expect-error
+      css={{ [`.vkuiFormItem__label`]: { whiteSpace: "initial", textOverflow: "initial" } }}
       style={{ minWidth: minWidth || 290 }}
       top={topLabel}
       htmlFor={id}

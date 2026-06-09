@@ -15,6 +15,7 @@ export const InputField: FC<IInputFieldProps> = ({
   placeholder,
   type,
   minWidth,
+  maxWidth,
 }) => {
   const [isTouched, setIsTouched] = useState(false);
 
@@ -26,14 +27,19 @@ export const InputField: FC<IInputFieldProps> = ({
   const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     onChange(event.target.value);
 
-    if (isTouched) {
+    if (isTouched || !isValid) {
       checkIsValid?.(event.target.value);
     }
   };
 
   return (
     <FormItem
-      style={{ minWidth: minWidth || 290 }}
+      // @ts-expect-error
+      css={{ [`.vkuiFormItem__label`]: { whiteSpace: "initial", textOverflow: "initial" } }}
+      style={{
+        minWidth: minWidth || 290,
+        maxWidth: maxWidth || 310,
+      }}
       top={topLabel}
       htmlFor={id}
       bottom={bottomLabel}

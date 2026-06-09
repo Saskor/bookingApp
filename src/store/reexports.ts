@@ -1,3 +1,3 @@
 export { type RootStore } from "./rootStore";
-export { OrgSettingsModalStore } from "./orgSettingsModalStore/orgSettingsModalStore";
-export { ModalsStore } from "./modalsStore";
+export { OrgSettingsStore } from "./orgSettingsStore/orgSettingsStore";
+export { PanelsStore } from "./panelsStore";

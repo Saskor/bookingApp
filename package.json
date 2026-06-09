@@ -7,14 +7,18 @@
     "dev": "vite",
     "buildTs": "tsc && vite build",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "openapi-rq -i ../api-gateway/docs/swagger.yaml -o ./src/openapi -c @hey-api/client-axios"
   },
   "dependencies": {
+    "@hey-api/client-axios": "^0.9.1",
+    "@tanstack/react-query": "^5.96.0",
     "@vkontakte/icons": "^3.44.0",
     "@vkontakte/vk-bridge": "^2.14.0",
     "@vkontakte/vk-bridge-react": "^1.0.1",
-    "@vkontakte/vk-mini-apps-router": "^1.7.6",
-    "@vkontakte/vkui": "^7.0.0",
+    "@vkontakte/vk-mini-apps-router": "^1.8.4",
+    "@vkontakte/vkui": "^7.11.7",
+    "axios": "^1.14.0",
     "mobx": "^6.15.0",
     "mobx-react": "^9.2.1",
     "react": "^18.3.1",
@@ -23,8 +27,10 @@
     "use-resize-observer": "^9.1.0"
   },
   "devDependencies": {
+    "@7nohe/openapi-react-query-codegen": "^2.1.0",
     "@eslint-react/eslint-plugin": "^3.0.0",
     "@eslint/js": "^10.0.1",
+    "@hey-api/openapi-ts": "0.95.0",
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.4.0",
     "@types/react": "^18.3.12",
@@ -40,6 +46,7 @@
     "esbuild": "~0.20.0",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import-x": "^4.16.2",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-dom": "^3.0.0",
     "eslint-plugin-react-naming-convention": "^3.0.0",

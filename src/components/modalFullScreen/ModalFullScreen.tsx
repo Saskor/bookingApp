@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import { type FC } from "react";
 import {
   ModalPage,
   ModalPageHeader,
@@ -25,6 +25,7 @@ export const ModalFullScreen: FC<IModalFullScreenProps> = ({
       open={isOpen}
       settlingHeight={100}
       hideCloseButton={platform === "ios"}
+      onClose={close}
       header={
         <ModalPageHeader
           before={
